@@ -1,0 +1,59 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <!-- <script src="index.js" charset="utf-8"></script> -->
+  <script src="https://cdn.pubnub.com/pubnub-3.7.13.min.js"></script>
+  <script src="jquery.js" charset="utf-8"></script>
+  <!-- mapbox GL CDN -->
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script src='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.js'></script>
+  <link href='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.css' rel='stylesheet' />
+
+  <style>
+      body { margin:0; padding:0; }
+      #map { position:absolute; top:0; bottom:0; width:100%; }
+  </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    var lat, lon;
+  	var pubnub = PUBNUB({
+      	publish_key   : 'demo',
+      	subscribe_key : 'demo'
+  	});
+
+    L.mapbox.accessToken = 'pk.eyJ1IjoiYW5tb2wxNzcxIiwiYSI6ImNYZXN1N28ifQ.s-1Hjdb2UR9_6eeTPJGn3A';
+    var map = L.mapbox.map('map', 'mapbox.streets');
+    var marker = L.marker([-73, 40], {
+        icon: L.mapbox.marker.icon({
+          'marker-size': 'large',
+          'marker-symbol': 'rocket'
+        })
+    });
+    marker.addTo(map);
+
+    pubnub.subscribe({
+      	channel : "iss-pubnub",
+      	message : function(message){
+        	lat = message['latitude'];
+          lon = message['longitude'];
+          // map.setCenter([lon, lat]);
+          map.setView([lat, lon], 4);
+          marker.setLatLng([lat, lon], 15);
+          // markers(lon, lat);
+      	}
+  	})
+    // pubnub subscribe end
+
+  });
+  // document end
+
+
+</script>
+</body>
+</html>
