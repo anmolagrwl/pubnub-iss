@@ -32,9 +32,11 @@
     var marker = L.marker([-73, 40], {
         icon: L.mapbox.marker.icon({
           'marker-size': 'large',
-          'marker-symbol': 'rocket'
+          'marker-symbol': 'rocket',
+          "marker-color": "#63b6e5"
         })
     });
+
     marker.addTo(map);
 
     pubnub.subscribe({
@@ -42,10 +44,9 @@
       	message : function(message){
         	lat = message['latitude'];
           lon = message['longitude'];
-          // map.setCenter([lon, lat]);
-          map.setView([lat, lon], 4);
+
+          map.setView([lat, lon], 6);
           marker.setLatLng([lat, lon], 15);
-          // markers(lon, lat);
       	}
   	})
     // pubnub subscribe end
