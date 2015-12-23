@@ -39,14 +39,22 @@
 
     marker.addTo(map);
 
+    // Add a new line to the map with no points.
+    var polyline = L.polyline([]).addTo(map);
+
+    // Keep a tally of how many points we've added to the map.
+    var pointsAdded = 0;
+
     pubnub.subscribe({
       	channel : "iss-pubnub",
       	message : function(message){
         	lat = message['latitude'];
           lon = message['longitude'];
 
-          map.setView([lat, lon], 6);
+          map.setView([lat, lon]);
           marker.setLatLng([lat, lon], 15);
+
+          polyline.addLatLng([lat, lon], pointsAdded);
       	}
   	})
     // pubnub subscribe end
