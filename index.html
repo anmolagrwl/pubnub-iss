@@ -13,11 +13,23 @@
   <style>
       body { margin:0; padding:0; }
       #map { position:absolute; top:0; bottom:0; width:100%; }
+      .ui-coordinates {
+      position:absolute;
+      bottom:10px;
+      left:10px;
+      padding:5px 10px;
+      background:rgba(0,0,0,0.5);
+      color:#fff;
+      font-size:11px;
+      line-height:18px;
+      border-radius:3px;
+      }
   </style>
 </head>
 <body>
 
 <div id="map"></div>
+<pre id='coordinates' class='ui-coordinates'></pre>
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -45,6 +57,8 @@
     // Keep a tally of how many points we've added to the map.
     var pointsAdded = 0;
 
+    var coordinates = document.getElementById('coordinates');
+
     pubnub.subscribe({
       	channel : "iss-pubnub",
       	message : function(message){
@@ -55,6 +69,8 @@
           marker.setLatLng([lat, lon], 15);
 
           polyline.addLatLng([lat, lon], pointsAdded);
+
+          coordinates.innerHTML = 'Latitude: ' + lat + '<br />Longitude: ' + lon;
       	}
   	})
     // pubnub subscribe end
