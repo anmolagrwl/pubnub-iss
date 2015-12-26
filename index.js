@@ -9,10 +9,9 @@ function moveISS () {
         var lat = response['iss_position']['latitude'];
         var lon = response['iss_position']['longitude'];
 
-        pubnub.publish({  //publishing the updated seat numbers through PubNub, in 'neo4j' channel
+        pubnub.publish({  //publishing the updated seat numbers through PubNub, in 'iss-pubnub' channel
         	channel: "iss-pubnub",
         	message: {"latitude" : lat, "longitude" : lon}, //this is the message payload we are sending
-					// message: {"geometry": {"type": "Point", "coordinates": [lat, lon]}, "type": "Feature", "properties": {}}, //this is the message payload we are sending
         	callback: function(m){console.log(m)}
       	});
 
@@ -21,5 +20,3 @@ function moveISS () {
 }
 
 moveISS();
-
-// message: {"geometry": {"type": "Point", "coordinates": [lat, lon]}, "type": "Feature", "properties": {}}, //this is the message payload we are sending
